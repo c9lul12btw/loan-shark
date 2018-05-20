@@ -1,5 +1,6 @@
 package io.github.c9lul12btw;
 
+import java.util.Date;
 import java.util.Scanner;
 import java.io.IOException;
 
@@ -26,32 +27,46 @@ public class Main {
     }
 
     public static void userEntryMain() {
+        boolean allTestsPassed = false;
+
+        System.out.print("Enter your full name: ");
+
+        System.out.print("Enter your DoB (dd/mm/yyyy): ");
+
+        System.out.print("Enter your address history (address/months stayed): ");
+
+        System.out.print("Enter your current employment status (employed/unemployed/retired): ");
+
+        System.out.print("Enter your annual income and monthly expenditure (income/expenditure): ");
+
+        userEntryDob("22/07/2000");
+
+        do {
+
+        } while (allTestsPassed = false);
+    }
+
+    public static boolean userEntryName(String userFullName) {
 
 
-        int k = 0;
-        while (k != 3) {
-            System.out.print("Enter your full name: ");
-            userEntryName = s.nextLine();
+        return true;
+    }
 
-            System.out.print("Enter your date of birth: ");
+    public static boolean userEntryDob(String userDob) {
+        s = new Scanner(userDob).useDelimiter("/");
+        int dateDay = Integer.parseInt(s.next());
+        int dateMonth = Integer.parseInt(s.next());
+        int dateYear = Integer.parseInt(s.next());
 
-            switch(k) {
-                case 0:
-                {
+        Date currentDate = new Date();
 
-                }
-                case 1:
-                {
-                    if (userEntryName.chars().allMatch(Character::isLetter)) {
-                        k = 3;
-                    }
-                }
-                case 2:
-                {
 
-                }
-            }
-        }
+
+        System.out.println(currentDate.toString());
+
+
+
+        return true;
     }
 
     public static void help() {

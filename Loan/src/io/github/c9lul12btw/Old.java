@@ -6,11 +6,6 @@ public class Old {
 
     private static Scanner s = new Scanner(System.in);
 
-    public static void main(String[] args) {
-        System.out.println("Amortization example calculator.");
-        paymentPerPeriod(entry());
-    }
-
     private static double[] entry() {
         System.out.print("Enter the loan amount: ");
         double loanAmt = s.nextDouble();
