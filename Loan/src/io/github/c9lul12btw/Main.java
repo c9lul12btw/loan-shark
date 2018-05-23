@@ -56,6 +56,7 @@ public class Main {
             System.out.format("%-10d%-10.2f%-10.2f%-10.2f%-12.2f%-10.2f\n", month, oldBalance, amountPerPeriod, interestPayment, principalPayment, newBalance);
             oldBalance = newBalance;                                                                                    //Finalizes balance and advances the schedule.
         }
+        accountInformationEntry();
         summary(loanLength, loanAmount, amountPerPeriod);
     }
 
@@ -66,6 +67,24 @@ public class Main {
         }
         System.out.format("\n%-10s%-10s%-10s%-10s%-12s%-10s","Month","Old","Monthly","Interest","Principal","New");     //Prints out formatted headings
         System.out.format("\n%-10s%-10s%-10s%-10s%-12s%-10s\n\n","Number","Balance","Payment","Paid","Paid","Balance"); //Prints out formatted headings
+    }
+
+    private static void accountInformationEntry() {
+        boolean validData;
+        do {
+            System.out.print("Enter your account number: ");
+            String accountNumber = s.next();                                                                        //Data input.
+            System.out.print("Enter your sort code: ");
+            String sortCode = s.next();                                                                             //Data input.
+
+            /*  The below IF checks if the lengths are the correct values as stated in the specification, but also whether or not they are all numbers, as is also required.*/
+            if ((accountNumber.length() == 8) && (sortCode.length() == 6) && (accountNumber.matches("[0-9]+")) && (sortCode.matches("[0-9]+")) ) {
+                validData = true;
+            } else {
+                System.out.println("Invalid input.");
+                validData = false;
+            }
+        } while (!validData);                                                                                           //While validData is not true.
     }
 
     private static void summary(int loanLength, double loanAmount, double amountPerPeriod) {
@@ -91,6 +110,10 @@ public class Main {
 
     private static void userEntryMain() {
         boolean allTestsPassed;
+        boolean validateCheckName;
+        boolean validateCheckAge;
+        boolean validateCheckAddress;
+        boolean validateCheckEmployment;
         do {
             String userFullName;
             String userDob;
@@ -99,22 +122,22 @@ public class Main {
             String incomeInfo;
 
             System.out.print("Enter your full name: ");
-            userFullName = s.nextLine();                                                                                //Stores user input for later use in validateName function.
+            userFullName = s.next();                                                                                    //Stores user input for later use in validateName function.
+            validateCheckName = validateName(userFullName);                                                             //Calls validateName function with userFullName as a parameter, passing the result into validateCheck.
             System.out.print("Enter your DoB (dd/mm/yyyy): ");
-            userDob = s.nextLine();                                                                                     //Stores user input for later use in validateDob function.
+            userDob = s.next();                                                                                         //Stores user input for later use in validateDob function.
+            validateCheckAge = validateDob(userDob);                                                                    //Calls validateDob function with userDob as a parameter, passing the result into validateCheck.
             System.out.print("Have you lived in the UK for at least 3 years? (Y/N): ");
-            citizenship = s.nextLine();                                                                                 //Stores user input for immediate use in validateAddress function.
-            validateAddress(citizenship);                                                                               //Calls validateAddress function with citizenship as a parameter.
+            citizenship = s.next();                                                                                     //Stores user input for immediate use in validateAddress function.
+            validateCheckAddress = validateAddress(citizenship);                                                        //Calls validateAddress function with citizenship as a parameter, passing the result into validateCheck.
             System.out.print("Enter your current employment status (employed/unemployed/retired): ");
-            employment = s.nextLine();                                                                                  //Stores user input for later use in validateEmployment function.
+            employment = s.next();                                                                                      //Stores user input for later use in validateEmployment function.
+            validateCheckEmployment = validateEmployment(employment);                                                   //Calls validateEmployment function with employment as a parameter, passing the result into validateCheck.
+
             System.out.print("Enter your annual income and monthly expenditure (income/expenditure): ");
             incomeInfo = s.next();                                                                                      //Is not explicitly used for validation.
 
-            /*  Sets allTestsPassed to true if all validations come back as true, otherwise is set to false.   */
-            allTestsPassed = validateName(userFullName) && validateDob(userDob) && validateAddress(citizenship) && validateEmployment(employment);
-
-        } while (!allTestsPassed);                                                                                      //While allTestsPassed is false, does not exit loop
-
+        } while (!validateCheckName && !validateCheckAge && !validateCheckAddress && !validateCheckEmployment);         //While all the validations are false.
     }
 
     private static boolean validateName(String userFullName) {
@@ -133,27 +156,30 @@ public class Main {
         LocalDate currentDateFormatted = LocalDate.parse(currentDate, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         LocalDate userDobFormatted = LocalDate.parse(userDob, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         int userAge = Period.between(userDobFormatted, currentDateFormatted).getYears();
-
         return userAge >= 18;                                                                                           //Returns true if userAge is over or equal to 18, stating that validation has succeeded.
     }
 
     private static boolean validateAddress(String citizenship) {
-        if (citizenship.toLowerCase().equals("y")) {
-            System.out.println("We require your last 3 years of addresses, and how long you lived at each one (months).");
-            for (int time = 0; time < 36;) {                                                                            //Loops around for the amount of months in 3 years.
-                System.out.print("Enter the address: ");
-                String address = s.nextLine();                                                                          //Data input.
-                System.out.println("Time stayed (months): ");
-                time = time + s.nextInt();                                                                              //Data input.
-                System.out.println("You have " + (36 - time) + " months left unaccounted for." );                       //Notifies the user if they have any time left remaining to enter for.
+        switch (citizenship.toLowerCase()) {
+            case "y": {
+                System.out.println("We require your last 3 years of addresses, and how long you lived at each one (months).");
+                for (int time = 0; time < 36;) {                                                                            //Loops around for the amount of months in 3 years.
+                    System.out.print("Enter the address: ");
+                    s.next();
+                    System.out.print("Time stayed (months): ");
+                    time = time + s.nextInt();                                                                              //Data input.
+                    System.out.println("You have " + (36 - time) + " months left unaccounted for." );                       //Notifies the user if they have any time left remaining to enter for.
+                }
+                return true;
             }
-            return true;
-        } else if (citizenship.toLowerCase().equals("n")){
-            System.out.println("You are required to live in the UK for 3 years to apply for this loan.");
-            return false;
-        } else {
-            System.out.println("Invalid input.");
-            return false;
+            case "n": {
+                System.out.println("You are required to live in the UK for 3 years to apply for this loan.");
+                return false;
+            }
+            default: {
+                System.out.println("Invalid input.");
+                return false;
+            }
         }
     }
 
