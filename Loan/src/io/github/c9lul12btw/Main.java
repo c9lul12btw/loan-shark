@@ -98,7 +98,7 @@ public class Main {
         System.out.println("Your loan ID is #" + random);
     }
 
-    private static void userChoice() {
+     private static void userChoice() {
         System.out.print("Would you like 'help', or to 'cont'?: ");
         String userEntryString = s.nextLine();                                                                          //User inputs their choice.
         switch(userEntryString.toLowerCase()) {                                                                         //Switches on the contents of the userEntryString variable when changed to lowercase.
