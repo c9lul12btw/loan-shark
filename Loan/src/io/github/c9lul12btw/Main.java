@@ -93,6 +93,9 @@ public class Main {
         System.out.println("Length of loan: " + loanLength);
         System.out.println("Payment per month: " + amountPerPeriod);
         System.out.println("Fixed interest rate: " + fixedInterestRate);
+
+        int random = (int)(Math.random() * 1000) + 1;
+        System.out.println("Your loan ID is #" + random);
     }
 
     private static void userChoice() {
@@ -136,7 +139,7 @@ public class Main {
 
             System.out.print("Enter your annual income and monthly expenditure (income/expenditure): ");
             incomeInfo = s.next();                                                                                      //Is not explicitly used for validation.
-
+            System.out.println("Enter your full name: ");
         } while (!validateCheckName && !validateCheckAge && !validateCheckAddress && !validateCheckEmployment);         //While all the validations are false.
     }
 
@@ -206,7 +209,3 @@ public class Main {
         System.out.println("When inputting data, follow the format suggested in the (parentheses).");
     }
 }
-
-
-
-
